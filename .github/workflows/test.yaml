@@ -1,13 +1,41 @@
-name: learn-github-actions
-run-name: ${{ github.actor }} is learning GitHub Actions
-on: [push]
+name: Run PHPUnit Tests
+
+on:
+  push:
+    branches:
+      - main
+
 jobs:
-  check-bats-version:
+  run_tests:
+    name: Run PHPUnit Tests
     runs-on: ubuntu-latest
+
+    services:
+      postgres:
+        image: postgres:latest
+        env:
+          POSTGRES_DB: your_database_name
+          POSTGRES_USER: your_username
+          POSTGRES_PASSWORD: your_password
+        ports:
+          - 5432:5432
+        options: --health-cmd pg_isready --health-interval 10s --health-timeout 5s --health-retries 5
+
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
         with:
-          node-version: '20'
-      - run: npm install -g bats
-      - run: bats -v
+          php-version: '8.1'
+
+      - name: Install Composer dependencies
+        run: composer install
+
+      - name: Prepare Laravel environment
+        run: php artisan key:generate --env=testing
+
+      - name: Run PHPUnit tests
+        run: vendor/bin/phpunit
+
