@@ -17,8 +17,8 @@ class ExampleTest extends TestCase
     public function test_the_application_returns_a_successful_response(): void
     {
         $this->assertDatabaseHas('users', [
-            'name'     => 'test',
-            'email'    => 'user1@insy.com',
+            'name'     => 'Test User',
+            'email'    => 'test@example.com',
             'password' => Hash::make('password'),
         ]);
     }
