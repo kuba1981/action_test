@@ -39,6 +39,9 @@ jobs:
       - name: Prepare Laravel environment
         run: php artisan key:generate --env=testing
 
+      - name: Run migrations
+        run: php artisan migrate --env=testing
+
       - name: Run PHPUnit tests
         run: vendor/bin/phpunit
 
