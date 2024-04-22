@@ -1,17 +1,13 @@
-name: Ci
-
-on:
-  push:
-    branches:
-      - main
-
+name: learn-github-actions
+run-name: ${{ github.actor }} is learning GitHub Actions
+on: [push]
 jobs:
-    test:
-        runs-on: ubuntu-latest
-
-        steps:
-          - name: Checkout
-          - uses: actions/checkout@v3
-
-          - name: Test
-            run: echo "Test"
+  check-bats-version:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+      - run: npm install -g bats
+      - run: bats -v
